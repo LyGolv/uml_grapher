@@ -1,5 +1,9 @@
 package fr.lernejo.umlgrapher;
 
+import org.reflections.Reflections;
+import org.reflections.scanners.Scanners;
+import org.reflections.util.ConfigurationBuilder;
+
 import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
@@ -18,11 +22,27 @@ public class UmlType {
     }
 
     private void getAllClass(Class[] classes) {
+
         for (Class c : classes) {
             recursionSearch(c);
         }
+
     }
 
+    private void getAllChild(Class c) {
+        Reflections reflections = new Reflections(new ConfigurationBuilder()
+            .forPackage("")
+            .forPackage("", c.getClassLoader())
+        );
+        Set<Class<?>> subTypes = reflections.get(
+            Scanners.SubTypes
+                .get(c)
+                .asClass(this.getClass().getClassLoader(), c.getClassLoader())
+        );
+        for (Class classe : subTypes) {
+            if (!types.contains(classe)) types.add(classe);
+        }
+    }
     private void recursionSearch(Class c) {
         Class superClass = c.getSuperclass();
         if (superClass != null
@@ -32,7 +52,8 @@ public class UmlType {
         for (Class inter : c.getInterfaces()) {
             recursionSearch(inter);
         }
-
+        // found child
+        this.getAllChild(c);
         types.add(c);
     }
 

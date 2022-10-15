@@ -97,7 +97,7 @@ class UmlGraphTests {
 
     interface Machin {
     }
-
+    // -c fr.lernejo.umlgrapher.Living$Animal$Ant -c fr.lernejo.umlgrapher.Living$Animal$Cat -c fr.lernejo.umlgrapher.Living$Plant$Tree$Alder
     public sealed interface Living {
         sealed interface Animal extends Living {
             final class Ant implements Animal {
