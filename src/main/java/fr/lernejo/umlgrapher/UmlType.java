@@ -22,18 +22,15 @@ public class UmlType {
     }
 
     private void getAllClass(Class[] classes) {
-
         for (Class c : classes) {
             recursionSearch(c);
         }
-
     }
 
     private void getAllChild(Class c) {
         Reflections reflections;
         try {
-            reflections = new Reflections(new ConfigurationBuilder()
-                .forPackage("")
+            reflections = new Reflections(new ConfigurationBuilder().forPackage("")
                 .forPackage("", c.getClassLoader())
             );
         } catch (RuntimeException e) {
@@ -41,11 +38,10 @@ public class UmlType {
             return;
         }
         Set<Class<?>> subTypes = reflections.get(
-            Scanners.SubTypes
-                .get(c)
-                .asClass(this.getClass().getClassLoader(), c.getClassLoader())
+            Scanners.SubTypes.get(c).asClass(this.getClass().getClassLoader(), c.getClassLoader())
         );
         for (Class classe : subTypes) {
+            getAllChild(classe);
             if (!types.contains(classe)) types.add(classe);
         }
     }
