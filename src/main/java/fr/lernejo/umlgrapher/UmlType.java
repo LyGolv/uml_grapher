@@ -30,10 +30,16 @@ public class UmlType {
     }
 
     private void getAllChild(Class c) {
-        Reflections reflections = new Reflections(new ConfigurationBuilder()
-            .forPackage("")
-            .forPackage("", c.getClassLoader())
-        );
+        Reflections reflections;
+        try {
+            reflections = new Reflections(new ConfigurationBuilder()
+                .forPackage("")
+                .forPackage("", c.getClassLoader())
+            );
+        } catch (RuntimeException e) {
+            System.out.println("Absence de Classe loader");
+            return;
+        }
         Set<Class<?>> subTypes = reflections.get(
             Scanners.SubTypes
                 .get(c)
