@@ -5,10 +5,13 @@ import fr.lernejo.umlgrapher.UmlGraph;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 class UmlGraphTests {
     @Test
     void empty_interface_with_no_relation() {
-        UmlGraph graph = new UmlGraph(Machin.class);
+        Class[] classes = new Class[]{Machin.class};
+        UmlGraph graph = new UmlGraph(classes);
 
         String output = graph.as(GraphType.Mermaid);
 
